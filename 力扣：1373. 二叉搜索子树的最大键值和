@@ -1,0 +1,59 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+// #include <stdio.h>
+class Solution {
+public:
+    int max_value = 0;
+    // 二叉搜索子树的最大键值和
+    int maxSumBST(TreeNode* root) {
+        // 右子树的最小值 左子树的最大值
+        // 递归判断左右子树的值是不是BST,再加上自己root本身判断还是不是BST
+        // 给定一个临时变量存储最大键值对和
+        traverse0(root);
+        return max_value;
+
+    }
+
+    vector<int> traverse0(TreeNode* root) {
+        // base case
+        if (root == nullptr)
+        {  
+            return {1, INT_MAX, INT_MIN, 0}; //下标0： 1 标志合法BST，0 表示不合法
+        }
+
+        // 判断左子树合法性 :需要告诉我结果左子树是不是合法，左子树的最大值是多少
+        vector<int> leftTree = traverse0(root->left);
+        max_value = max(leftTree[3], max_value);
+        // 判断右子树合法性
+        vector<int> rightTree = traverse0(root->right);
+        max_value = max(rightTree[3], max_value);
+        // 根节点和左子树最大值 和 右子树最小值作比较:判断是不是一颗合法的BST
+        vector<int> temp_res(4,0);
+        if (leftTree[0]==1 && rightTree[0] ==1 && leftTree[2] < root->val && rightTree[1] > root->val)
+        {
+            temp_res[0] = 1;
+            temp_res[1] = min(leftTree[1], root->val);
+            temp_res[2] = max(rightTree[2], root->val);
+            temp_res[3] = leftTree[3] + rightTree[3] + root->val;
+            max_value = max(temp_res[3], max_value);
+            // cout << "之后max_value: "<< max_value<<endl;
+            // cout<<"leftTree[0]: "<< leftTree[0] << ", leftTree[1]: " << leftTree[1] << ", leftTree[2]: " << leftTree[2] <<", leftTree[3]: " << leftTree[3] <<endl;
+            // cout<<"rightTree[0]: "<< rightTree[0] << ", rightTree[1]: " << rightTree[1] << ", rightTree[2]: " << rightTree[2] <<", rightTree[3]: " << rightTree[3] << endl;
+            // cout<< "root->val: " << root->val << endl;
+        } else {
+            temp_res[0] = 0;
+        }
+        return temp_res;
+    }
+
+
+};
