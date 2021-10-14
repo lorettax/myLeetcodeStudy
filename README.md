@@ -1,1 +1,29 @@
-# AlgorithmArototype
+# 力扣797所有可能的路径 有向无环图 
+class Solution {
+public:
+    vector<vector<int>> res_graph;
+    // 所有可能的路径
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        vector<int> path;
+        traverse_graph(graph, 0, path);
+        return res_graph;
+    }
+    void traverse_graph(vector<vector<int>>& graph, int s, vector<int> path) {
+        path.push_back(s);
+
+        int n = graph.size();
+        if (s == n - 1)
+        {
+            res_graph.push_back({path});
+            path.pop_back();
+            return;
+        }
+
+        for (size_t i = 0; i < graph[s].size(); i++)
+        {
+            traverse_graph(graph, graph[s][i], path);
+        }
+        path.pop_back(); 
+    }
+
+};
