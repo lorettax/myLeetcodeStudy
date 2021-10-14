@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int** mem; 
+    int numTrees(int n) {
+       mem = new int*[n+1];
+       for (size_t i = 0; i < n+1; i++)
+       {
+           mem[i] = new int[n+1]();
+       }
+       
+        return count(1, n);
+    }
+
+    int count(int range_l, int range_r)
+    {
+        // base case
+        if (range_l > range_r)
+        {
+            return 1;
+        }
+        
+        // 查看备忘录
+        if (mem[range_l][range_r] != 0)
+        {
+            return mem[range_l][range_r];
+        }
+        
+
+        int result = 0;
+        for (size_t i = range_l; i <= range_r; i++)
+        {
+            // i 作为root的根节点
+            int left = count(range_l,i - 1);
+            int right = count(i+1, range_r);
+
+            result += left * right;
+        }
+
+        mem[range_l][range_r] = result;
+
+        return result;
+    }
+};
