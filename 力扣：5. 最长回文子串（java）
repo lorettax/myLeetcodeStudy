@@ -1,0 +1,45 @@
+class Solution {
+    public String longestPalindrome(String s) {
+
+        String max_res="";
+        char[] temp =  s.toCharArray();
+        if (s.length()==1 || (s.length()==2 && temp[0]==temp[1])) {
+            return s;
+        }
+        if (s.length()==2 && temp[0]!= temp[1]) {
+            return s.substring(0,1);
+        }
+        int point_i, point_j;
+        for (int i = 0; i < temp.length-1; i++) {
+            String temp_max;
+            if (temp[i] == temp[i+1]) {
+                point_i = i;
+                point_j = i+1;
+                temp_max = this.centerExpansion(temp, s,point_i, point_j);
+                //比
+                max_res= temp_max.length()>max_res.length() ? temp_max: max_res;
+            }
+            if (i>0) {
+                point_i=i-1; point_j =i+1;
+                temp_max = this.centerExpansion(temp,s, point_i, point_j);
+                max_res= temp_max.length()>max_res.length() ? temp_max: max_res;
+            }
+        }
+        return max_res;
+    }
+    // 判断中心点
+    public String centerExpansion(char[] temp, String s ,int point_i, int point_j) {
+        while (temp[point_i] == temp[point_j] ) {
+            point_i--;
+            point_j++;
+            if (point_i <0 || point_j >temp.length-1) {
+                break;
+            }
+        }
+        point_i++;
+        point_j--;
+        int temp_max = point_j-point_i+1;
+        return s.substring(point_i,point_j+1);
+    }
+
+}
