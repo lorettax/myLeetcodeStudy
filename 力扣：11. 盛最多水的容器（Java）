@@ -1,0 +1,20 @@
+class Solution {
+    public int maxArea(int[] height) {
+        int max_vector = 0;
+        int weight = 0;
+        int heig = 0;
+        int curr_heig = 0;
+        for (int i = 0; i < height.length; i++) {
+            curr_heig = Math.max(height[i], curr_heig);
+            if (height[i] >= curr_heig) {
+                for (int j = i+1; j < height.length; j++) {
+                    weight = j-i;
+                    heig = height[i] >= height[j]? height[j] : height[i];
+                    max_vector = Math.max(weight*heig, max_vector);
+                }
+            }
+
+        }
+        return max_vector;
+    }
+}
