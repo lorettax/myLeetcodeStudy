@@ -1,0 +1,69 @@
+#动态规划
+class Solution {
+public:
+    //  // 编辑距离
+    // int minDistance(string word1, string word2) {
+    //     vector<vector<int>> mem; // 备忘录
+
+    //     // 插入 删除 替换
+    //     int i_len = word1.size();
+    //     int j_len = word2.size();
+
+    //     mem.assign()
+    //     for (size_t i = 0; i < i_len; i++)
+    //     {
+    //         mem[i].assign(j_len, -1);
+    //     }
+        
+
+    //     return temp_distance(i_len-1, j_len-1, word1, word2, mem);
+    // }
+
+    // 编辑距离
+    int minDistance(string word1, string word2) {
+        // vector<vector<int>> mem; // 备忘录
+
+        // 插入 删除 替换
+        int i_len = word1.size();
+        int j_len = word2.size();
+
+        vector<vector<int>> mem(i_len, vector<int>(j_len)); // 备忘录
+        for(int i=0;i<i_len;i++){//初始化
+         for(int j=0;j< j_len;j++){
+            mem[i][j] = -1;
+         }
+        }
+
+        return temp_distance(i_len-1, j_len-1, word1, word2, mem);
+    }
+    int temp_distance(int i, int j, const string& word1, const string& word2, vector<vector<int>>& mem) {
+         // base case 
+         if (i < 0)
+         {
+             return j+1;
+         }
+         if (j < 0)
+         {
+             return i+1;
+         }
+
+         if (mem[i][j] != -1)
+         {
+             return mem[i][j];
+         }
+         
+         
+         if (word1[i] == word2[j]) 
+         {
+             mem[i][j] = temp_distance(i - 1, j -1, word1, word2, mem);
+         } else {
+             int delele_temp = temp_distance(i-1,j, word1, word2, mem) + 1;
+             int insert_temp = temp_distance(i,j-1, word1, word2, mem) + 1;
+             int replace_temp = temp_distance(i-1,j-1, word1, word2, mem) + 1;
+
+             int temp_mid = min(delele_temp, insert_temp);
+             mem[i][j] = min(temp_mid, replace_temp);
+         }
+         return mem[i][j];
+    }
+};
