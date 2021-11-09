@@ -1,0 +1,62 @@
+class Solution {
+public:
+   // 下降路径最小和
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        
+        // 判断从每一个点开始的最优解
+        // 每一个状态转移下一步 [i+1][j-1],  [i+1][j],  [i+1][j+1]
+        // 从上面三个中得到最优解
+        
+        int row_len = matrix.size(); // 因为是正方形，长 宽一样
+
+        vector<vector<int>> mem(row_len, vector<int>(row_len)); // 备忘录
+        for(int i=0;i<row_len;i++){//初始化
+         for(int j=0;j< row_len;j++){
+            mem[i][j] = 66666;
+         }
+        }
+
+        int result = INT_MAX;
+        
+        for (size_t i = 0; i < row_len; i++)
+        {
+            result = min(result, dp(matrix, row_len-1, i, mem));
+        }
+        
+        return result;
+
+    }
+
+    int dp(vector<vector<int>>& matrix, int i, int j, vector<vector<int>>& mem) {
+        // 处理越界索引
+        if (i < 0 || j < 0 || i >= matrix.size() || j >= matrix.size())
+        {
+            return 99999;
+        }
+        
+        if (i == 0)
+        {
+            return matrix[0][j];
+        }
+
+        // 备忘录
+        if (mem[i][j] != 66666)
+        {
+            return mem[i][j];
+        }
+        
+        // 状态开始转移
+        mem[i][j] = matrix[i][j] + min_temp(
+            dp(matrix, i-1, j-1, mem),
+            dp(matrix, i-1, j, mem),
+            dp(matrix, i-1, j+1, mem)
+        );
+
+        return mem[i][j];
+    }
+
+    int min_temp(int a, int b, int c) {
+        return min(a, min(b, c));
+    }
+
+};
