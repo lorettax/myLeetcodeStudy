@@ -1,0 +1,60 @@
+class Solution {
+public:
+    // 两个字符串的最小ASCII删除和
+    int minimumDeleteSum(string s1, string s2) {
+        int i_len = s1.size();
+        int j_len = s2.size();
+
+        // 声明备忘录
+        vector<vector<int>> mem(i_len, vector<int>(j_len));
+        // 初始化备忘录
+        for (size_t i = 0; i < i_len; i++)
+        {
+            for (size_t j = 0; j < j_len; j++)
+            {
+                mem[i][j] = -1;
+            }
+        }
+
+        return dp2(s1, 0, s2, 0, mem);
+    }
+
+    int dp2(string& s1, int i, string& s2, int j, vector<vector<int>>& mem) {
+        int result = 0;
+
+        if (i == s1.size())
+        {
+            for (; j < s2.size(); j++)
+            {
+                result += s2.at(j);
+            }
+            return result;
+        }
+
+        if (j == s2.size())
+        {
+            for (; i < s1.size(); i++)
+            {
+                result += s1.at(i);
+            }
+            return result;
+        }
+        
+        if (mem[i][j] != -1)
+        {
+            return mem[i][j];
+        }
+
+        if (s1.at(i) == s2.at(j))
+        {
+            mem[i][j] = dp2(s1, i +1, s2, j+1, mem);
+        } else {
+            mem[i][j] = min(
+                s1.at(i) + dp2(s1, i+1,s2, j, mem),
+                s2.at(j) + dp2(s1, i, s2, j+1, mem)
+            );
+        }
+        return mem[i][j];   
+    }
+
+};
