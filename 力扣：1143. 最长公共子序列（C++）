@@ -1,0 +1,45 @@
+#字符串 动态规划
+
+class Solution {
+public:
+
+    int longestCommonSubsequence(string text1, string text2) {
+        int i_len = text1.size();
+        int j_len = text2.size();
+
+        // 声明备忘录
+        vector<vector<int>> mem(i_len, vector<int>(j_len));
+        // 初始化备忘录
+        for (size_t i = 0; i < i_len; i++)
+        {
+            for (size_t j = 0; j < j_len; j++)
+            {
+                mem[i][j] = -1;
+            }
+        }
+        return dp1(text1, 0, text2, 0, mem);// 因为是递增 所以从0开始往上加
+    }
+
+    int dp1(string& text1, int i_len, string& text2, int j_len, vector<vector<int>>& mem) {
+        if (i_len == text1.size() || j_len == text2.size())
+        {
+            return 0;
+        }
+        
+        if(mem[i_len][j_len] != -1) {   // 观察题意边界条件 查询已经计算过的值
+            return mem[i_len][j_len];
+        }
+
+        if (text1.at(i_len) == text2.at(j_len))
+        {
+            mem[i_len][j_len] = 1 + dp1(text1, i_len + 1, text2, j_len + 1, mem);
+        } else {
+            mem[i_len][j_len] = max( 
+                            dp1(text1, i_len + 1, text2, j_len, mem),
+                            dp1(text1, i_len, text2, j_len + 1, mem)
+            );
+        }
+        return mem[i_len][j_len];
+    }
+
+};
