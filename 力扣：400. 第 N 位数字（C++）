@@ -1,0 +1,25 @@
+class Solution {
+public:
+    // 第 N 位数字
+    int findNthDigit(int n) {
+        if (n<10)
+        {
+            return n;
+        }
+        // string str = to_string(n);
+        int base = 1;
+        int weight = 9;
+        while (n > (long)base * weight)
+        {
+            n -= base * weight;
+            base++;
+            weight *= 10;
+        }
+        n--;
+        int result = int(pow(10,base-1)) + n / base; // 算出来这个数是多少
+        int index = n % base;
+        
+        int ans = to_string(result)[index]-'0';
+        return ans;
+    }
+};
