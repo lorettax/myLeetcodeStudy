@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maxPower(string s) {
+
+        int max_res = -1;
+        int temp_res = 1;
+        int s_len = s.size();
+        char temp_val;
+
+        if(s_len <=1) {
+            return s_len;
+        }
+
+        for (int i = 0; i < s_len-1; i++)
+        {   
+            temp_val = s[i];
+
+            while (temp_val == s[i+1])
+            {
+                temp_res++;
+                i++;
+            }
+
+            max_res = max(temp_res, max_res);
+            temp_res = 1;
+        }
+
+        return max_res;
+        
+    }
+};
