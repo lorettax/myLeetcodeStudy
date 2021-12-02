@@ -1,0 +1,38 @@
+class Solution {
+public:
+    // 全排列
+    vector<vector<int>> result;
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int> track;
+        backtrace(nums, track);
+        return result;
+    }
+
+    // 路径， 选择列表
+    void backtrace(vector<int>& nums, vector<int>& track) {
+        // base case
+        if (track.size() == nums.size())
+        {
+            result.push_back(track);
+            return;
+        }
+        
+        // 循环遍历
+        for (int i = 0; i < nums.size(); i++)
+        {
+            // 排除不合法的选择
+            if (find(track.begin(), track.end(), nums[i]) != track.end())
+            {
+                continue;
+            }
+            // 做选择
+            track.push_back(nums[i]);
+            // 递归
+            backtrace(nums, track);
+            // 撤销选择
+            track.pop_back();
+
+        }
+    
+    }
+};
