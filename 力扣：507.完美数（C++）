@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool checkPerfectNumber(int num) {
+        int half_num = num/2+1;
+
+        int result = 0;
+        
+        for (int i = 1; i < half_num; i++)
+        {
+            if ((num % i) == 0)
+            {
+                result += i;
+            }
+        }
+        if (result == num)
+        {
+            return true;
+        }
+        return false;
+    }
+};
